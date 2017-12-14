@@ -15,7 +15,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['POST'])
 def upload_file():
-    print(request.__dict__)
+    print(request.form.get("style"))
     if 'file' not in request.files:
         print("No file part")
         return BadRequest('No file part')
