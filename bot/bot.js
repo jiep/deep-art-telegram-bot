@@ -85,8 +85,10 @@ const bot = new Telegraf(BOT_TOKEN)
 // bot.use(session())
 // bot.use(stage.middleware())
 bot.on('photo', (ctx) => {
+  console.log(ctx.message.photo);
   console.log(ctx.message.photo[0].file_id);
-  file_id = ctx.message.photo[0].file_id;
-  bot.getFile(file_id).then(r => console.log(r)).catch(e => console.log(e));
+  const file_id = ctx.message.photo[0].file_id;
+  ctx.telegram.getFileLink(file_id).then(r => console.log(r)).catch(e => console.log(e));
+  return ctx.replyWithPhoto(file_id);
 })
 bot.startPolling()
