@@ -3,24 +3,23 @@ const path = require('path');
 const rp = require('request-promise');
 const mime = require('mime-types');
 
-const FILENAME = "/Users/jiep12345/Downloads/IMG-20170301-WA0000.jpg";
-const API_URL = "http://127.0.0.1:5000";
-
-var options = {
+function getDeepArt(uri, style, filepath) {
+  const options = {
+    encoding: null,
     method: 'POST',
-    uri: API_URL,
+    uri,
     formData: {
-      style: "la_muse",
+      style,
       file: {
-          value: fs.createReadStream(FILENAME),
-          options: {
-              filename: path.basename(FILENAME),
-              contentType: mime.contentType(path.extname(FILENAME))
-          }
+        value: fs.createReadStream(filepath),
+        options: {
+            filename: path.basename(filepath),
+            contentType: mime.contentType(path.extname(filepath))
+        }
       }
     }
-};
+  };
+  return rp(options);
+}
 
-rp(options)
-  .then(r=>console.log("OK"))
-  .catch(e => console.log(e));
+module.exports = { getDeepArt };

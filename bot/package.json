@@ -11,9 +11,11 @@
   "dependencies": {
     "dotenv": "4.0.0",
     "mime-types": "2.1.17",
+    "node-yaml": "^3.1.1",
     "request": "2.83.0",
     "request-promise": "4.2.2",
-    "telegraf": "3.17.2",
+    "streamifier": "^0.1.1",
+    "telegraf": "^3.17.2",
     "telegraf-logger": "2.0.2"
   }
 }
