@@ -1,4 +1,4 @@
-BOT_TOKEN: sdfsdf
+BOT_TOKEN: sfdsfd
 API_URL: http://localhost:5000
 STYLES:
   - la_muse
@@ -7,4 +7,5 @@ STYLES:
   - udnie
   - wave
   - wreck
+DEFAULT_STYLE: wave
 IMAGES: './images'

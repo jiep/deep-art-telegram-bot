@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, send_file
+import glob
+from flask import Flask, request, send_file, after_this_request
 from werkzeug.exceptions import BadRequest
 from werkzeug.utils import secure_filename
 
@@ -18,6 +19,15 @@ def allowed_file(filename):
 
 @app.route('/', methods=['POST'])
 def upload_file():
+
+    @after_this_request
+    def cleanup(response):
+        for f in glob.glob("{}/*".format(INPUT_PATH)):
+            os.remove(f)
+        for f in glob.glob("{}/*".format(OUTPUT_PATH)):
+            os.remove(f)
+        return response
+
     if not request.form.get("style"):
         print('No selected style')
         return BadRequest('No selected style')
@@ -42,7 +52,7 @@ def upload_file():
         checkpoint = '{}/{}.ckpt'.format(MODELS_PATH, style)
         print(checkpoint)
         ffwd_to_img(input_filepath, output_filepath, checkpoint, '/cpu:0')
-        # TODO: remove files 
+        # TODO: remove files
         return send_file(output_filepath, mimetype='image/jpg')
 
 
