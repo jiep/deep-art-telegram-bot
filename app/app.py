@@ -52,7 +52,6 @@ def upload_file():
         checkpoint = '{}/{}.ckpt'.format(MODELS_PATH, style)
         print(checkpoint)
         ffwd_to_img(input_filepath, output_filepath, checkpoint, '/cpu:0')
-        # TODO: remove files
         return send_file(output_filepath, mimetype='image/jpg')
 
 
