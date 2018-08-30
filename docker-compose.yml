@@ -1,0 +1,18 @@
+version: "2"
+services:
+  app:
+    build: app
+    ports:
+     - "5000:5000"
+    networks:
+     - bot
+  bot:
+    build: bot
+    ports:
+     - "3000:3000"
+    environment:
+     - WEBHOOK_URL=https://example.org
+    networks:
+     - bot
+networks:
+  bot:

@@ -4,15 +4,16 @@ const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
 const Scene = require('telegraf/scenes/base');
+const download = require('image-downloader');
+const express = require('express');
 const { leave, enter } = Stage;
 const { getDeepArt } = require('./upload');
-const download = require('image-downloader');
-
-const FILENAME = "../app/examples/cat.jpeg";
 
 const config = yaml.readSync('./config.yaml', {
   encoding: 'utf8'
 });
+
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
 const { BOT_TOKEN, API_URL, STYLES, IMAGES } = config;
 
@@ -79,22 +80,33 @@ styleScene.on('photo', (ctx) => {
             if(err) console.log(err);
             ctx.replyWithPhoto({ source: fs.createReadStream(filename) });
             fs.unlinkSync(filename, (err) => {
-              if(err) console.log(err);
+              if(err) console.err(err);
             });
           })
-        });
+        })
+        .catch((err) => console.error(err));
     })
     .catch((err) => {
       console.error(err)
     })
-  }).catch(e => console.log(e));
+  }).catch(e => console.error(e));
 })
 
 
-const bot = new Telegraf(BOT_TOKEN)
-const stage = new Stage([styleScene], { ttl: 10 })
-bot.use(session())
-bot.use(stage.middleware())
-bot.command('deepart', enter('style'))
-bot.on(['message', 'photo', 'sticker'], (ctx) => ctx.reply('Enter /deepart'))
-bot.startPolling()
+const bot = new Telegraf(BOT_TOKEN);
+const stage = new Stage([styleScene], { ttl: 10 });
+bot.use(session());
+bot.use(stage.middleware());
+bot.command('deepart', enter('style'));
+bot.on(['message', 'photo', 'sticker'], (ctx) => ctx.reply('Enter /deepart'));
+bot.telegram.setWebhook(`${WEBHOOK_URL}/${BOT_TOKEN}`);
+
+const app = express();
+app.get('/', (req, res) => res.send('Hello World!'));
+app.use(bot.webhookCallback(`/${BOT_TOKEN}`));
+app.listen(3000, () => {
+  console.log('App listening on port 3000!');
+  console.log(`WEBHOOK_URL ----> ${WEBHOOK_URL}`);
+  console.log(`WEBHOOK_URL ----> ${WEBHOOK_URL}`);
+
+})

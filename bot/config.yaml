@@ -1,5 +1,5 @@
-BOT_TOKEN: dsfsdf
-API_URL: http://localhost:5000
+BOT_TOKEN: sdfsdfsdf
+API_URL: http://app:5000
 STYLES:
   - la_muse
   - rain_princess
