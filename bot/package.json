@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cryptiles": "4.1.2",
     "dotenv": "4.0.0",
     "image-downloader": "^3.4.1",
     "mime-types": "2.1.17",
